@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, RefreshCw, Copy } from "lucide-react";
 import { generateMemorablePassword } from "@/utils/password-strength";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
 
 interface MemorableSuggestionProps {
@@ -31,60 +31,122 @@ export function MemorableSuggestion({ basePassword, className }: MemorableSugges
   };
 
   return (
-    <Card className={`w-full overflow-hidden ${className}`}>
-      <CardContent className="p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium flex items-center gap-1">
-            <Sparkles className="h-4 w-4 text-primary" />
-            Memorable Alternative
-          </h3>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={generateNewSuggestion}
-            className="h-8 px-2"
-          >
-            <RefreshCw className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        {suggestion ? (
-          <motion.div 
-            className="space-y-2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <div className="p-3 bg-muted rounded-md font-mono text-center break-all">
-              {suggestion}
-            </div>
-            <div className="flex">
-              <Button 
-                onClick={copyToClipboard} 
-                className="w-full"
-                size="sm"
-              >
-                <Copy className="h-4 w-4 mr-2" />
-                Copy to Clipboard
-              </Button>
-            </div>
-          </motion.div>
-        ) : (
-          <div className="flex flex-col items-center p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-3">
-              Generate a memorable alternative that's still secure
-            </p>
-            <Button 
-              onClick={generateNewSuggestion}
-              variant="outline"
-              className="w-full"
-              size="sm"
+    <motion.div 
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+    >
+      <Card className={`w-full overflow-hidden neo-blur ${className}`}>
+        <CardContent className="p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <motion.h3 
+              className="text-lg font-medium flex items-center gap-1"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              <Sparkles className="h-4 w-4 mr-2" />
-              Generate Memorable Password
-            </Button>
+              <motion.div
+                animate={{ 
+                  rotate: [0, 15, -15, 0],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                  repeatDelay: 5 
+                }}
+              >
+                <Sparkles className="h-4 w-4 text-primary" />
+              </motion.div>
+              <span>Memorable Alternative</span>
+            </motion.h3>
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={generateNewSuggestion}
+                className="h-8 px-2"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            </motion.div>
           </div>
-        )}
-      </CardContent>
-    </Card>
+          
+          <AnimatePresence mode="wait">
+            {suggestion ? (
+              <motion.div 
+                key="suggestion"
+                className="space-y-2"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              >
+                <motion.div 
+                  className="p-3 bg-muted rounded-md font-mono text-center break-all"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {suggestion}
+                </motion.div>
+                <motion.div 
+                  className="flex"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <motion.div 
+                    className="w-full"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button 
+                      onClick={copyToClipboard} 
+                      className="w-full"
+                      size="sm"
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      Copy to Clipboard
+                    </Button>
+                  </motion.div>
+                </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                key="empty"
+                className="flex flex-col items-center p-4 text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <p className="text-sm text-muted-foreground mb-3">
+                  Generate a memorable alternative that's still secure
+                </p>
+                <motion.div 
+                  className="w-full"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    onClick={generateNewSuggestion}
+                    variant="outline"
+                    className="w-full"
+                    size="sm"
+                  >
+                    <Sparkles className="h-4 w-4 mr-2" />
+                    Generate Memorable Password
+                  </Button>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }

@@ -16,10 +16,10 @@ export function PasswordStrengthBar({
 }: PasswordStrengthBarProps) {
   return (
     <div className={cn("w-full space-y-2", className)}>
-      <div className="flex h-2 w-full overflow-hidden rounded-full bg-secondary">
+      <div className="flex h-2 w-full overflow-hidden rounded-full bg-secondary relative">
         <motion.div
           className={cn(
-            "password-strength-bar h-full rounded-full",
+            "password-strength-bar h-full rounded-full relative",
             strength === "weak" && score > 0 && "bg-strength-weak",
             strength === "medium" && "bg-strength-medium",
             strength === "strong" && "bg-strength-strong"
@@ -28,12 +28,31 @@ export function PasswordStrengthBar({
           initial={{ width: "0%" }}
           animate={{ width: `${score}%` }}
           transition={{ 
-            duration: 0.6, 
-            ease: "easeOut",
-            delay: 0.1
+            duration: 0.8, 
+            type: "spring",
+            stiffness: 100,
+            damping: 15
           }}
-        ></motion.div>
+        >
+          {score > 10 && (
+            <motion.div
+              className="absolute top-0 right-0 h-full w-3 bg-white/30"
+              initial={{ opacity: 0 }}
+              animate={{ 
+                opacity: [0, 0.5, 0],
+                x: ['-100%', '200%']
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                repeatType: "loop",
+                repeatDelay: 1,
+              }}
+            />
+          )}
+        </motion.div>
       </div>
+      
       <div className="flex justify-between text-xs">
         <motion.span 
           className={cn(

@@ -23,10 +23,16 @@ export function FeedbackList({ feedback, className }: FeedbackListProps) {
               item.type === "warning" && "text-strength-medium",
               item.type === "success" && "text-strength-strong"
             )}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ delay: index * 0.1, duration: 0.2 }}
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, height: 0, scale: 0.9 }}
+            transition={{ 
+              delay: index * 0.1, 
+              duration: 0.3,
+              type: "spring",
+              stiffness: 400,
+              damping: 25
+            }}
           >
             <motion.span
               className={cn(
@@ -35,16 +41,24 @@ export function FeedbackList({ feedback, className }: FeedbackListProps) {
                 item.type === "warning" && "bg-strength-medium",
                 item.type === "success" && "bg-strength-strong"
               )}
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: index * 0.1 + 0.1 }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ 
+                delay: index * 0.1 + 0.1,
+                type: "spring",
+                stiffness: 400,
+                damping: 20
+              }}
             >
               {item.type === "error" ? "✕" : item.type === "warning" ? "!" : "✓"}
             </motion.span>
             <motion.span
               initial={{ opacity: 0.5, x: -5 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 + 0.2 }}
+              transition={{ 
+                delay: index * 0.1 + 0.2,
+                type: "spring"
+              }}
             >
               {item.message}
             </motion.span>

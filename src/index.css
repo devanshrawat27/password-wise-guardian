@@ -69,7 +69,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border selection:bg-primary/10 selection:text-foreground;
   }
 
   body {
@@ -89,5 +89,54 @@
   
   .card-shadow {
     @apply shadow-lg shadow-primary/10;
+  }
+  
+  .glassmorphism {
+    @apply backdrop-blur-lg bg-white/5 border border-white/10 shadow-lg;
+  }
+  
+  .neo-blur {
+    @apply backdrop-blur-sm bg-card/50 border border-primary/5 shadow-xl;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent;
+  }
+  
+  .glow {
+    box-shadow: 0 0 15px rgba(var(--primary), 0.4);
+  }
+  
+  .glow-strong {
+    box-shadow: 0 0 30px rgba(var(--primary), 0.6);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
