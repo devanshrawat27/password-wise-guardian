@@ -118,16 +118,19 @@ export function LandingPage({ onGetStarted }: { onGetStarted: () => void }) {
           transition={{ delay: 1.2, duration: 0.8 }}
           className="flex justify-center"
         >
-          <Button 
-            onClick={onGetStarted}
-            size="lg" 
-            className="relative overflow-hidden bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 btn-shimmer glow"
+          <motion.div
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span>Get Started</span>
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+            <Button 
+              onClick={onGetStarted}
+              size="lg" 
+              className="relative overflow-hidden bg-gradient-to-r from-primary to-primary/80 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 btn-shimmer glow"
+            >
+              <span>Get Started</span>
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </motion.div>
         </motion.div>
         
         {/* Features list */}
